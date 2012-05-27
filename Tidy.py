@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sublime_plugin import TextCommand
-from sublime import Region, error_message
+from sublime import Region
 from subprocess import call
 from os.path import abspath, expanduser, exists, join
 from StringIO import StringIO
@@ -36,7 +36,7 @@ class python_tidy(TextCommand):
         region = Region(0L, view.size())
         sourcestr = view.substr(region)
         encoding = view.encoding()
-        if encoding = 'undefined':
+        if encoding == 'undefined':
             encoding = 'utf-8'
         source = StringIO(sourcestr.encode(encoding))
         output = StringIO()

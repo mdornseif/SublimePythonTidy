@@ -1,10 +1,12 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from sublime_plugin import TextCommand
-from sublime import Region
+from sublime import Region, error_message
 from subprocess import call
 from os.path import abspath, expanduser, exists, join
 from StringIO import StringIO
 from sys import path
-
 
 # load the git submodule
 extra = abspath('PythonTidy')
@@ -32,7 +34,11 @@ class python_tidy(TextCommand):
         setup()
         view = self.view
         region = Region(0L, view.size())
-        source = StringIO(view.substr(region))
+        sourcestr = view.substr(region)
+        encoding = view.encoding()
+        if encoding = 'undefined':
+            encoding = 'utf-8'
+        source = StringIO(sourcestr.encode(encoding))
         output = StringIO()
         PythonTidy.tidy_up(source, output)
-        view.replace(edit, region, output.getvalue())
+        view.replace(edit, region, output.getvalue().decode(encoding))
